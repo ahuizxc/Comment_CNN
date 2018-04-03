@@ -186,7 +186,7 @@ cnn_test_y = to_categorical(test_y)
 model = my_CNN()
 history = LossHistory()
 model.fit(cnn_train_x,cnn_train_y,epochs=50,batch_size = 16, validation_data=(cnn_test_x, cnn_test_y),callbacks=[history])
-cnn_pre = model.predict(cnn_test_x,batch_size=16)
+cnn_pre = model.predict(cnn_test_x,batch_size=16)[:,1]
 cnn_pred = (cnn_pre >= 0.5)*1
 print ('CNN AUC: ',str(metrics.roc_auc_score(test_y,cnn_pre)))
 print ('CNN ACC: ',str(metrics.accuracy_score(test_y,cnn_pred)))
@@ -198,8 +198,8 @@ fpr, tpr, thresholds = metrics.roc_curve(test_y, cnn_pre)
 roc_auc = metrics.auc(fpr,tpr)
 plt.figure(3)
 plt.plot(fpr, tpr, lw=1)
-plt.title('ROC Curve(Bayes)')
-
+plt.title('ROC Curve(CNN)')
+history.loss_plot('epoch')
 
 
 gnb = GaussianNB()
@@ -217,20 +217,3 @@ roc_auc = metrics.auc(fpr,tpr)
 plt.figure(3)
 plt.plot(fpr, tpr, lw=1)
 plt.title('ROC Curve(Bayes)')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
